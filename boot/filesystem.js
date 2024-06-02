@@ -117,16 +117,18 @@ function persistFS() {
 	function traverse(base, path) {
 		for (let directory in base) {
 			let path1 = `${path}/${directory}`;
-			if (base[directory] instanceof File) {
+			if (base[directory].contents) {
 				store(path1, base[directory].contents);
 				base[directory] = true;
 			} else {
-				if (typeof base[directory] === "object" && directory !== "dev") {
-					// It's a directory
-					traverse(base[directory], path1);
-				} else {
-					// It's a file
-					base[directory] = new File(store(path1), path1, 777);
+				if (directory !== "dev") {
+					if (typeof base[directory] === "object") {
+						// It's a directory
+						traverse(base[directory], path1);
+					} else {
+						// It's a file
+						base[directory] = new File(store(path1), path1, 777);
+					}
 				}
 			}
 		}
