@@ -113,7 +113,7 @@ function fcreate(filename, file) {
 }
 
 function persistFS() {
-	let FAT = window.fs;
+	let FAT = structuredClone(window.fs);
 	function traverse(base, path) {
 		for (let directory in base) {
 			let path1 = `${path}/${directory}`;
